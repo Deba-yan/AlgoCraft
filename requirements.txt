@@ -1,0 +1,4 @@
+# AlgoCraft - Python Server Requirements
+# This project uses Python's built-in standard library modules (http.server, json, subprocess, sys, urllib).
+# No external pip dependencies are required!
+

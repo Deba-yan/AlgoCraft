@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlgoCraft - Interactive Algorithm Visualizer</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Top Mobile Navigation Bar -->
+    <header class="mobile-header">
+        <div class="mobile-brand">
+            <i class="fa-solid fa-wand-magic-sparkles brand-icon"></i>
+            <h2>AlgoCraft</h2>
+        </div>
+        <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle Menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </header>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-wand-magic-sparkles brand-icon"></i>
+                <h2>AlgoCraft</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-tab="landing">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Home</span>
+                </button>
+                <button class="nav-item" data-tab="sorting">
+                    <i class="fa-solid fa-arrow-down-wide-short"></i>
+                    <span>Sorting Visualizer</span>
+                </button>
+                <button class="nav-item" data-tab="graphs">
+                    <i class="fa-solid fa-route"></i>
+                    <span>Pathfinding on Maps</span>
+                </button>
+                <button class="nav-item" data-tab="backtracking">
+                    <i class="fa-solid fa-puzzle-piece"></i>
+                    <span>Backtracking & NP</span>
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <p>Designed for Interactive Learning</p>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- TAB: LANDING -->
+            <section id="tab-landing" class="tab-content active">
+                <div class="hero-section">
+                    <div class="hero-overlay"></div>
+                    <div class="hero-text">
+                        <div class="badge">Computer Science Visualized</div>
+                        <h1>Master Complex Algorithms</h1>
+                        <p class="hero-desc">Interactive, step-by-step visualizers to help you build intuition about sorting, graph pathways, backtracking, and optimization.</p>
+                        
+                        <!-- Typewriter element requested by user -->
+                        <div class="typewriter-container">
+                            <span id="typewriter"></span><span class="typewriter-cursor">|</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="feature-card" data-target="sorting">
+                        <div class="card-icon"><i class="fa-solid fa-arrow-down-wide-short"></i></div>
+                        <h3>Sorting Algorithms</h3>
+                        <p>Analyze how elements shuffle into order. Includes Bubble, Selection, Insertion, Merge, Quick, and Heap Sort with array structures visualization.</p>
+                        <span class="learn-more">Explore Visualizer <i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+                    <div class="feature-card" data-target="graphs">
+                        <div class="card-icon"><i class="fa-solid fa-route"></i></div>
+                        <h3>Pathfinding on Maps</h3>
+                        <p>Find the shortest path on a map grid using Dijkstra, Bellman-Ford, and Floyd-Warshall, rendering paths dynamically on an interactive node-map.</p>
+                        <span class="learn-more">Explore Visualizer <i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+                    <div class="feature-card" data-target="backtracking">
+                        <div class="card-icon"><i class="fa-solid fa-puzzle-piece"></i></div>
+                        <h3>Backtracking & NP</h3>
+                        <p>See recursion in action with N-Queens constraint satisfaction and Graph Coloring optimization, tracing decisions and backtracks.</p>
+                        <span class="learn-more">Explore Visualizer <i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB: SORTING -->
+            <section id="tab-sorting" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-arrow-down-wide-short"></i> Sorting Algorithms</h2>
+                    <p>Observe comparisons, swaps, and partitioning of list elements in real time.</p>
+                </div>
+
+                <div class="dashboard-layout">
+                    <!-- Visualization Panel -->
+                    <div class="visualizer-card main-panel">
+                        <div class="control-bar">
+                            <div class="control-group">
+                                <label for="sort-algorithm">Algorithm</label>
+                                <select id="sort-algorithm" class="custom-select">
+                                    <option value="bubble">Bubble Sort</option>
+                                    <option value="selection">Selection Sort</option>
+                                    <option value="insertion">Insertion Sort</option>
+                                    <option value="merge">Merge Sort</option>
+                                    <option value="quick">Quick Sort</option>
+                                    <option value="heap">Heap Sort</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label>Speed: <span id="sort-speed-val">50ms</span></label>
+                                <input type="range" id="sort-speed" min="5" max="500" value="50">
+                            </div>
+                            <div class="control-group" id="sort-size-group">
+                                <label>Size: <span id="sort-size-val">30</span></label>
+                                <input type="range" id="sort-size" min="10" max="100" value="30">
+                            </div>
+                            <div class="btn-group">
+                                <button id="sort-randomize" class="btn btn-secondary"><i class="fa-solid fa-shuffle"></i> Randomize</button>
+                                <button id="sort-play" class="btn btn-primary"><i class="fa-solid fa-play"></i> Play</button>
+                                <button id="sort-pause" class="btn btn-secondary" disabled><i class="fa-solid fa-pause"></i> Pause</button>
+                            </div>
+                        </div>
+
+                        <!-- Custom Input Bar -->
+                        <div class="input-panel">
+                            <div class="input-group">
+                                <label for="sort-custom-input">Custom Array Input (comma-separated, max 20 items):</label>
+                                <div class="input-with-btn">
+                                    <input type="text" id="sort-custom-input" placeholder="e.g. 15, 42, 8, 23, 4, 31, 19, 44" class="custom-text-input">
+                                    <button id="sort-apply-input" class="btn btn-accent">Apply</button>
+                                </div>
+                                <span id="input-error" class="error-msg"></span>
+                            </div>
+                        </div>
+
+                        <!-- Main Visualization Container -->
+                        <div class="visualizer-container">
+                            <div id="sorting-board" class="sorting-board"></div>
+                        </div>
+
+                        <!-- Data explanation structure (diagram of input) -->
+                        <div class="explanation-container">
+                            <h3><i class="fa-solid fa-chart-simple"></i> Array Data Representation Diagram</h3>
+                            <p class="small-desc">A visual breakdown of the current array structure, index mapping, and element states.</p>
+                            <div id="array-diagram" class="array-diagram"></div>
+                        </div>
+
+                        <!-- Sorting Code Viewer Panel -->
+                        <div class="code-viewer-container">
+                            <div class="code-viewer-header">
+                                <h3>Sorting Algorithm Code Reference</h3>
+                                <div class="code-header-right">
+                                    <div class="language-tabs">
+                                        <button class="lang-tab active" data-lang="py" data-algo="sort">Python</button>
+                                        <button class="lang-tab" data-lang="c" data-algo="sort">C</button>
+                                        <button class="lang-tab" data-lang="cpp" data-algo="sort">C++</button>
+                                    </div>
+                                    <button class="btn btn-copy" data-target-code="code-snippet-sorting"><i class="fa-regular fa-copy"></i> Copy Code</button>
+                                </div>
+                            </div>
+                            <div class="code-content-wrapper">
+                                <pre><code id="code-snippet-sorting" class="fira-code"></code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar info and complexity -->
+                    <div class="sidebar-panel">
+                        <div class="info-card">
+                            <h3>Complexity & Properties</h3>
+                            <table class="complexity-table">
+                                <tr>
+                                    <td>Time Complexity (Worst)</td>
+                                    <td><code id="sort-worst-time">O(n²)</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Time Complexity (Average)</td>
+                                    <td><code id="sort-avg-time">O(n²)</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Time Complexity (Best)</td>
+                                    <td><code id="sort-best-time">O(n)</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Space Complexity (Auxiliary)</td>
+                                    <td><code id="sort-space">O(1)</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Stable Sorting</td>
+                                    <td><span id="sort-stable" class="badge-property">Yes</span></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="info-card">
+                            <h3>Algorithm Explanation</h3>
+                            <div class="scroll-desc">
+                                <p id="sort-description">Select an algorithm to view details.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB: GRAPHS -->
+            <section id="tab-graphs" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-route"></i> Shortest Path Routing on Map</h2>
+                    <p>Find the shortest path between nodes using standard pathfinding algorithms rendered on a glowing topological city map.</p>
+                </div>
+
+                <div class="dashboard-layout">
+                    <!-- Graph Canvas Panel -->
+                    <div class="visualizer-card main-panel">
+                        <div class="control-bar">
+                            <div class="control-group">
+                                <label for="graph-algorithm">Algorithm</label>
+                                <select id="graph-algorithm" class="custom-select">
+                                    <option value="dijkstra">Dijkstra's Algorithm</option>
+                                    <option value="bellman">Bellman-Ford Algorithm</option>
+                                    <option value="floyd">Floyd-Warshall (All-Pairs)</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label for="graph-start">Source Node</label>
+                                <select id="graph-start" class="custom-select"></select>
+                            </div>
+                            <div class="control-group" id="graph-end-group">
+                                <label for="graph-end">Destination Node</label>
+                                <select id="graph-end" class="custom-select"></select>
+                            </div>
+                            <div class="control-group">
+                                <label>Speed: <span id="graph-speed-val">200ms</span></label>
+                                <input type="range" id="graph-speed" min="50" max="1000" value="200">
+                            </div>
+                            <div class="btn-group">
+                                <button id="graph-run" class="btn btn-primary"><i class="fa-solid fa-play"></i> Run</button>
+                                <button id="graph-reset" class="btn btn-secondary"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                            </div>
+                        </div>
+
+                        <!-- Canvas Visualizer -->
+                        <div class="visualizer-container canvas-container">
+                            <div class="canvas-wrapper">
+                                <canvas id="graph-canvas" width="700" height="420"></canvas>
+                                <div class="canvas-legend">
+                                    <span class="legend-item"><span class="legend-dot start"></span> Start</span>
+                                    <span class="legend-item"><span class="legend-dot end"></span> End</span>
+                                    <span class="legend-item"><span class="legend-dot visited"></span> Visited</span>
+                                    <span class="legend-item"><span class="legend-dot path"></span> Shortest Path</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Code Viewer Panel -->
+                        <div class="code-viewer-container">
+                            <div class="code-viewer-header">
+                                <h3>Algorithm Code Reference</h3>
+                                <div class="code-header-right">
+                                    <div class="language-tabs">
+                                        <button class="lang-tab active" data-lang="py" data-algo="graph">Python</button>
+                                        <button class="lang-tab" data-lang="c" data-algo="graph">C</button>
+                                        <button class="lang-tab" data-lang="cpp" data-algo="graph">C++</button>
+                                    </div>
+                                    <button class="btn btn-copy" data-target-code="code-snippet"><i class="fa-regular fa-copy"></i> Copy Code</button>
+                                </div>
+                            </div>
+                            <div class="code-content-wrapper">
+                                <pre><code id="code-snippet" class="fira-code"></code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Info and Execution Logs Sidebar -->
+                    <div class="sidebar-panel">
+                        <div class="info-card">
+                            <h3>Algorithm details</h3>
+                            <div class="scroll-desc">
+                                <h4 id="graph-name" class="accent-title">Dijkstra's Algorithm</h4>
+                                <p id="graph-desc"></p>
+                                <div class="complexity-badge-container">
+                                    <span class="c-badge">Time: <strong id="graph-time-comp">O((V + E) log V)</strong></span>
+                                    <span class="c-badge">Space: <strong id="graph-space-comp">O(V)</strong></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-card flex-grow-card">
+                            <h3>Execution Live Logs</h3>
+                            <div id="graph-logs" class="logs-container">
+                                <div class="log-line system">Click "Run" to view distance calculation steps.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB: BACKTRACKING & NP -->
+            <section id="tab-backtracking" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-puzzle-piece"></i> Backtracking & Constraint Satisfaction</h2>
+                    <p>Explore algorithms that search systematically through configuration spaces, solving NP-hard optimization problems.</p>
+                </div>
+
+                <!-- Backtracking Sub-Tabs -->
+                <div class="subtab-navigation">
+                    <button class="subtab-btn active" data-subtab="nqueens">N-Queens Problem</button>
+                    <button class="subtab-btn" data-subtab="coloring">Graph Coloring Concept</button>
+                </div>
+
+                <!-- N-Queens Subtab View -->
+                <div id="subtab-nqueens-view" class="subtab-view active">
+                    <div class="dashboard-layout">
+                        <!-- Chessboard Visualizer Card -->
+                        <div class="visualizer-card main-panel">
+                            <div class="control-bar">
+                                <div class="control-group">
+                                    <label>Grid Size N: <span id="nqueens-size-val">8</span></label>
+                                    <input type="range" id="nqueens-size" min="4" max="10" value="8">
+                                </div>
+                                <div class="control-group">
+                                    <label>Speed: <span id="nqueens-speed-val">150ms</span></label>
+                                    <input type="range" id="nqueens-speed" min="20" max="1000" value="150">
+                                </div>
+                                <div class="btn-group">
+                                    <button id="nqueens-play" class="btn btn-primary"><i class="fa-solid fa-play"></i> Solve</button>
+                                    <button id="nqueens-pause" class="btn btn-secondary" disabled><i class="fa-solid fa-pause"></i> Pause</button>
+                                    <button id="nqueens-reset" class="btn btn-secondary"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                                </div>
+                            </div>
+
+                            <div class="visualizer-container chess-container">
+                                <div id="nqueens-board" class="nqueens-board"></div>
+                            </div>
+
+                            <!-- Code Reference -->
+                            <div class="code-viewer-container">
+                                <div class="code-viewer-header">
+                                    <h3>N-Queens Implementation</h3>
+                                    <div class="code-header-right">
+                                        <div class="language-tabs">
+                                            <button class="lang-tab active" data-lang="py" data-algo="nqueens">Python</button>
+                                            <button class="lang-tab" data-lang="c" data-algo="nqueens">C</button>
+                                            <button class="lang-tab" data-lang="cpp" data-algo="nqueens">C++</button>
+                                        </div>
+                                        <button class="btn btn-copy" data-target-code="code-snippet-nqueens"><i class="fa-regular fa-copy"></i> Copy Code</button>
+                                    </div>
+                                </div>
+                                <div class="code-content-wrapper">
+                                    <pre><code id="code-snippet-nqueens" class="fira-code"></code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- N-Queens Info Sidebar -->
+                        <div class="sidebar-panel">
+                            <div class="info-card">
+                                <h3>N-Queens Problem</h3>
+                                <div class="scroll-desc">
+                                    <p>The goal is to place <strong>N</strong> chess queens on an \(N \times N\) chessboard such that no two queens threaten each other.</p>
+                                    <p>This requires that no two queens share the same row, column, or diagonal lines.</p>
+                                    <div class="complexity-badge-container">
+                                        <span class="c-badge">Time: <strong>O(N!)</strong></span>
+                                        <span class="c-badge">Space: <strong>O(N)</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-card flex-grow-card">
+                                <h3>Backtracking Traversal Log</h3>
+                                <div id="nqueens-logs" class="logs-container">
+                                    <div class="log-line system">Click "Solve" to start the backtracking algorithm.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Graph Coloring Subtab View -->
+                <div id="subtab-coloring-view" class="subtab-view">
+                    <div class="dashboard-layout">
+                        <!-- Graph Coloring Visualizer Card -->
+                        <div class="visualizer-card main-panel">
+                            <div class="control-bar">
+                                <div class="control-group">
+                                    <label for="coloring-palette">Chromatic Number (m colors)</label>
+                                    <select id="coloring-palette" class="custom-select">
+                                        <option value="3">3 Colors</option>
+                                        <option value="4" selected>4 Colors</option>
+                                        <option value="5">5 Colors</option>
+                                    </select>
+                                </div>
+                                <div class="control-group">
+                                    <label>Speed: <span id="coloring-speed-val">250ms</span></label>
+                                    <input type="range" id="coloring-speed" min="50" max="1000" value="250">
+                                </div>
+                                <div class="btn-group">
+                                    <button id="coloring-play" class="btn btn-primary"><i class="fa-solid fa-play"></i> Color Graph</button>
+                                    <button id="coloring-reset" class="btn btn-secondary"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                                </div>
+                            </div>
+
+                            <!-- Canvas Visualizer -->
+                            <div class="visualizer-container canvas-container">
+                                <div class="canvas-wrapper">
+                                    <canvas id="coloring-canvas" width="700" height="400"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Code Reference -->
+                            <div class="code-viewer-container">
+                                <div class="code-viewer-header">
+                                    <h3>Graph Coloring Algorithm Implementation</h3>
+                                    <div class="code-header-right">
+                                        <div class="language-tabs">
+                                            <button class="lang-tab active" data-lang="py" data-algo="coloring">Python</button>
+                                            <button class="lang-tab" data-lang="c" data-algo="coloring">C</button>
+                                            <button class="lang-tab" data-lang="cpp" data-algo="coloring">C++</button>
+                                        </div>
+                                        <button class="btn btn-copy" data-target-code="code-snippet-coloring"><i class="fa-regular fa-copy"></i> Copy Code</button>
+                                    </div>
+                                </div>
+                                <div class="code-content-wrapper">
+                                    <pre><code id="code-snippet-coloring" class="fira-code"></code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Graph Coloring Sidebar -->
+                        <div class="sidebar-panel">
+                            <div class="info-card">
+                                <h3>Graph Coloring Concept</h3>
+                                <div class="scroll-desc">
+                                    <p>An assignment of colors to the vertices of a graph such that no two adjacent vertices share the same color.</p>
+                                    <p>The smallest number of colors needed to color a graph is called its <strong>Chromatic Number \(\chi(G)\)</strong>.</p>
+                                    <div class="complexity-badge-container">
+                                        <span class="c-badge">Time: <strong>O(m^V)</strong></span>
+                                        <span class="c-badge">Space: <strong>O(V)</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-card flex-grow-card">
+                                <h3>Coloring Step Logs</h3>
+                                <div id="coloring-logs" class="logs-container">
+                                    <div class="log-line system">Click "Color Graph" to begin coloring vertices.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notification for Copying Code -->
+    <div id="toast" class="toast">Code copied to clipboard!</div>
+    
+    <!-- Footer -->  
+     <footer style="text-align:center;padding:20px 10px;color:#888;font-size:14px;margin-top:40px;">
+                    © 2026 AlgoCraft | Owner: <strong>Debayan Kundu</strong>
+    </footer>
+
+    <!-- MathJax for rendering equations cleanly -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <!-- JavaScript files -->
+    <script src="js/code_templates.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/sorting.js"></script>
+    <script src="js/graphs.js"></script>
+    <script src="js/backtracking.js"></script>
+</body>
+</html>
